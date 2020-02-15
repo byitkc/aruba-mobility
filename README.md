@@ -18,3 +18,9 @@ My infrastructure setup is as follows:
 | --- | --- |
 | mc00.home.byitkc.com | 10.1.255.14 |
 | mc01.home.byitkc.com | 10.1.255.15 |
+
+| VLAN Name | VLAN ID |
+| --- | --- |
+| workstations | 10 |
+| servers | 11 |
+| management | 255 |
