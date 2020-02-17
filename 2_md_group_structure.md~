@@ -1,0 +1,22 @@
+# Managed Device Group Structure
+
+Management Hierarchys which push configuration down to nested groups.
+
+Cannot be renamed in AOS 8.0 or 8.1, can be renamed in AOS 8.2 using `configuration node rename <old-path> <new-path>`
+
+I'm going to create a hierarchy of
+
+- Central
+  - KansasCity
+
+as my deployment is only one location at the moment, but more advanced hierarchies can be easly created
+
+## Configuration
+
+```
+(mm00) [md] #configure t
+(mm00) [md] (config) #configuration node /md/Central
+(mm00) [md] (config) #configuration node /md/Central/KansasCity
+(mm00) [md] (config) #exit
+```
+

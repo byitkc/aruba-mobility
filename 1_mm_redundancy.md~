@@ -1,0 +1,51 @@
+# Mobility Master Redundancy
+
+The first task that we are going to perform is going to be to cluster our Mobility Master Systems. This breaks down into two configuration steps:
+
+1. Setting up VRRP between the Mobility Masters
+2.Setting up Database Replication between the Mobility Masters
+
+## Setting up VRRP
+
+You'll want to select another IP in the management vlan that your Mobility Masters are in to act as the VIP between the two mobility masters. In my case I'm going to be using 10.1.11.62.
+
+### Configuraiton
+
+```
+(mm00) [mynode] (config) #vrrp 1
+(mm00) ^[mynode] (config-submode)#ip address 10.1.11.62
+(mm00) ^[mynode] (config-submode)#description primary-mm00
+(mm00) ^[mynode] (config-submode)#authentication aruba123
+(mm00) ^[mynode] (config-submode)#no preempt
+(mm00) ^[mynode] (config-submode)#priority 120
+(mm00) ^[mynode] (config-submode)#advertise 5
+(mm00) ^[mynode] (config-submode)#vlan 11
+(mm00) ^[mynode] (config-submode)#no shutdown
+(mm00) ^[mynode] (config-submode)#exit
+(mm00) ^[mynode] (config) #write mem
+```
+
+```
+(mm01) [mynode] (config) #vrrp 1
+(mm01) ^[mynode] (config-submode)#ip address 10.1.11.62
+(mm01) ^[mynode] (config-submode)#description secondary-mm01
+(mm01) ^[mynode] (config-submode)#authentication aruba123
+(mm01) ^[mynode] (config-submode)#no preempt
+(mm01) ^[mynode] (config-submode)#priority 100
+(mm01) ^[mynode] (config-submode)#advertise 5
+(mm01) ^[mynode] (config-submode)#vlan 11
+(mm01) ^[mynode] (config-submode)#no shutdown
+(mm01) ^[mynode] (config-submode)#exit
+(mm01) ^[mynode] (config) #write mem
+```
+
+### Verification
+
+We can verify VRRP using the following commands. Ensure that the system with the higher priority is master
+
+```
+(mm00) [mynode] (config) #show vrrp stats all
+(mm00) [mynode] (config) #show vrrp 1
+```
+
+## Configure Database Replication
